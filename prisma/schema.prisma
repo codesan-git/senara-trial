@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+// Cart - Project Perumahan
+model Project {
+  id  Int @unique @id @default(autoincrement())
+  name String
+  image String? @default("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80")
+  imgName String?
+  description String
+  maps String?
+  projectName ExistingProject[]
+}
+// ProductInCart - Perantara
+model ExistingProject {
+  id           Int @id @default(autoincrement())
+  projectId    Int @map("project_id")
+  houseId      Int @map("house_id")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  house House @relation(fields: [houseId], references: [id], onDelete: Cascade)
+}
+// Product - Housing
+model House {
+  id            Int @unique @id @default(autoincrement())
+  name          String
+  image         String?
+  description   String?
+  projectName ExistingProject[]
+}
