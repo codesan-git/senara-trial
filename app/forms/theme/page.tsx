@@ -26,63 +26,38 @@ import {
 } from "@/components/ui/table"
 import { ModalCreateProject } from "@/components/modalCreateProject"
 import { ModalProject } from "@/components/modalProject"
-import useComponent from "@/app/hooks/getComponentHooks"
+import useTheme from "@/app/hooks/getThemeHooks"
+import { ModalCreateTheme } from "../components/modalCreateTheme"
+// import { ModalTheme } from "../components/modalTheme"
 
-import { ModalComponent } from "../components/modalComponent"
-import { ModalCreateComponent } from "../components/modalCreateComponent"
+// import { ModalTheme } from "../components/modalTheme"
+// import { ModalCreateTheme } from "@/forms/components/modalCreateTheme"
 
 interface FormData {
-  componentId: string
+  themeId: string
   name: string
-  image: string
-  price: number
-  imgName: string
+  color: string
 }
 
-export default function TableComponent() {
-  const { data: getComponent = [] } = useComponent()
+export default function TableTheme() {
+  const { data: getTheme = [] } = useTheme()
 
-  async function deleteComponent(data: FormData, i: number) {
-    const storage = getStorage()
-    try {
-      console.log("dataform", getComponent)
-      console.log("ngetes bro", getComponent[i].imgName)
-      const desertRef = ref(storage, `image/component/${getComponent[i].imgName}`)
-      console.log('ref', desertRef)
-      fetch(`http://localhost:3000/api/component/${getComponent[i].id}`, {
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      })
-      // Create a reference to the file to delete
-
-      // Delete the file
-      deleteObject(desertRef)
-        .then(() => {
-          console.log("data deleted")
-          // File deleted successfully
-        })
-        .catch((error) => {
-          // Uh-oh, an error occurred!
-        })
-      // .then(() => {
-      //   //
-      // })
-    } catch (error) {
-      console.log(error)
-    }
+  async function deleteTheme(data: FormData, i: number) {
+    fetch(`http://localhost:3000/api/theme/${getTheme[i].id}`, {
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    })
   }
 
   return (
     <>
-      <ModalCreateComponent
-        componentId={""}
+      <ModalCreateTheme
+        themeId={""}
         name={""}
-        image={""}
-        price={0}
-        imgName={null}
+        color={""}
       />
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
@@ -96,27 +71,19 @@ export default function TableComponent() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {getComponent.map((component: any, i: number) => (
-            <TableRow key={component.id}>
-              <TableCell className="font-medium">
-                {component.componentId}
-              </TableCell>
-              <TableCell className="text-center">{component.name}</TableCell>
-              <TableCell className="text-center"><a href={component.image} >{component.imgName}</a></TableCell>
-              <TableCell className="text-center">
-                Rp. {component.price}
-              </TableCell>
+          {getTheme.map((theme: any, i: number) => (
+            <TableRow key={theme.id}>
+              <TableCell className="font-medium">{theme.id}</TableCell>
+              <TableCell className="text-center">{theme.themeId}</TableCell>
+              <TableCell className="text-center">{theme.name}</TableCell>
+              <TableCell className="text-center" style={{backgroundColor:`${theme.color}`}}>{theme.color}</TableCell>
               <TableCell className="flex justify-center gap-4">
-                <ModalComponent
-                  component={{
-                    id: component?.id,
-                    componentId: component?.componentId,
-                    name: component?.name,
-                    price: component?.price,
-                    image: component?.image,
-                    imgName: component?.imgName,
-                  }}
-                />
+                {/* <ModalTheme theme={{
+                  id: theme.id,
+                  themeId: theme.themeId,
+                  name: theme.name,
+                  color: theme.color
+                }} /> */}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="outline">Show Dialog</Button>
@@ -135,7 +102,7 @@ export default function TableComponent() {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() => deleteComponent(component.id, i)}
+                        onClick={() => deleteTheme(theme.id, i)}
                       >
                         Continue
                       </AlertDialogAction>
