@@ -88,10 +88,10 @@ export default function TableComponent() {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Id</TableHead>
+            <TableHead className="w-[100px]">No</TableHead>
+            <TableHead className="text-center">ID</TableHead>
             <TableHead className="text-center">Name</TableHead>
-            <TableHead className="text-center">Image</TableHead>
-            <TableHead className="text-center">Price</TableHead>
+            <TableHead className="text-center">Color</TableHead>
             <TableHead className="text-center">Action</TableHead>
           </TableRow>
         </TableHeader>

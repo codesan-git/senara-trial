@@ -33,7 +33,11 @@ const sidebarNavItems = [
   {
     title: "Component",
     href: "forms/component"
-  }
+  },
+  {
+    title: "Theme",
+    href: "forms/theme"
+  },
 ]
 
 interface SettingsLayoutProps {

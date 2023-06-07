@@ -3,6 +3,14 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Component } from "@prisma/client"
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage"
+import { storage } from "firebaseConfig"
 
 import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
@@ -22,10 +30,6 @@ import { Toast, ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastDemo } from "@/components/toast"
 import useComponents from "@/app/hooks/getComponentHooks"
-
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
-
-import { storage } from 'firebaseConfig'
 import useComponent from "@/app/hooks/getComponentHooks"
 
 interface ComponentData {
@@ -41,13 +45,13 @@ interface FormData {
 }
 
 export function ModalComponent({ component }: ComponentData) {
-    const { toast } = useToast()
-    const { data: getComponent = [] } = useComponent()
-    
+  const { toast } = useToast()
+  const { data: getComponent = [] } = useComponent()
+
   const [form, setForm] = useState<FormData>({
     componentId: component?.componentId,
     name: component?.name,
-    image: '',
+    image: getComponent.image,
     price: component?.price,
     imgName: component?.imgName,
   })
@@ -62,7 +66,6 @@ export function ModalComponent({ component }: ComponentData) {
   const [isUploading, setIsUploading] = useState(false)
   const [progressUpload, setProgressUpload] = useState(0)
 
-
   const router = useRouter()
 
   const handleSelectedFile = (files: any) => {
@@ -72,18 +75,6 @@ export function ModalComponent({ component }: ComponentData) {
       console.log(files[0])
     } else {
       console.log("error")
-    }
-  }
-
-  const fetchData = async() => {
-    try {
-        const res = await fetch(`http://localhost:3000/api/component`,{
-            method: 'GET',
-        })
-        const json = await res.json();
-        setData1(json)
-    } catch (error) {
-        
     }
   }
 
@@ -112,29 +103,24 @@ export function ModalComponent({ component }: ComponentData) {
     }
   }
 
-//   const handleSubmit = async (data: FormData) => {
-//     try {
-//       update(data)
-//     } catch (error) {
-//       //console.log(error)
-//     }
-//   }
-
-  const handleSubmit = async (data: FormData, i:number) => {
+  const handleSubmit = async (data: FormData) => {
+    // if (imageFile) {
+    // }
+    // data.image = image;
+    // data.imgName = imgName;
+    const name = data.name.replace(" ", "")
+    const storageRef = ref(storage, `image/component/${component.imgName}`)
     try {
       if (imageFile) {
-        const name = data.name.replace(" ", "")
-        const storageRef = ref(storage, `image/component/${name}`)
         const uploadTask = uploadBytesResumable(storageRef, imageFile)
 
-        data1.map(({imgName})=> {
-            const deleteRef = ref(storage, `image/component/${imgName[i]}`);
-            deleteObject(deleteRef).then(()=> {
-                console.log('Delete Success');
-            }).catch((error)=> {
-                console.log('delete fail ' + error)
-            })
-        })
+        deleteObject(storageRef)
+          .then(() => {
+            console.log("Delete Success")
+          })
+          .catch((error) => {
+            console.log("delete fail " + error)
+          })
 
         uploadTask.on(
           "state_changed",
@@ -154,30 +140,28 @@ export function ModalComponent({ component }: ComponentData) {
             }
           },
           () => {
-            
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
               //url is download url of file
-              // setDownloadURL(url)
+              setDownloadURL(url)
+              console.log(component.image)
               console.log("url", url)
-              update(data, url, name)
+              update(data, downloadURL, name)
             })
           }
         )
       } else {
         // message.error('File not found')npm
         console.log("file not found")
+        const image = form?.image
+        const imgName = form?.imgName!
+        update(data, image, imgName)
       }
-
       // create(data)
     } catch (error) {
       //console.log(error)
     }
   }
-
-  useEffect(()=> {
-    fetchData()
-  },[])
-
+  // console.log('imageFile', component.image)
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -185,7 +169,7 @@ export function ModalComponent({ component }: ComponentData) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Edit Component</DialogTitle>
           <DialogDescription>
             Make changes to your profile here. Click save when you`re done.
           </DialogDescription>
@@ -200,7 +184,9 @@ export function ModalComponent({ component }: ComponentData) {
               placeholder={component?.componentId}
               value={form?.componentId}
               className="col-span-3"
-              onChange={(e) => setForm({ ...form, componentId: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, componentId: e.target.value })
+              }
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -229,15 +215,16 @@ export function ModalComponent({ component }: ComponentData) {
               }
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4 w-full">
+          <div className="grid w-full grid-cols-4 items-center gap-4">
             <Label htmlFor="picture" className="text-right">
               Image
             </Label>
+
             <Input
               id="picture"
               type="file"
               placeholder="Select file"
-              value={form?.image}
+              value={""}
               accept="image/png"
               width={500}
               onChange={(files) => handleSelectedFile(files.target.files)}
@@ -250,11 +237,9 @@ export function ModalComponent({ component }: ComponentData) {
             <Textarea
               id="image"
               placeholder={String(component?.image)}
-            //   value={form?.image}
+              //   value={form?.image}
               className="col-span-3"
-              onChange={(e) =>
-                setForm({ ...form, image: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
             />
           </div>
         </div>
@@ -263,6 +248,7 @@ export function ModalComponent({ component }: ComponentData) {
             type="submit"
             onClick={(e) => {
               e.preventDefault()
+              update(form, form?.image, form?.imgName!)
               handleSubmit(form)
               setIsOpen(false)
               toast({

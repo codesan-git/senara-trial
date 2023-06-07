@@ -229,7 +229,7 @@ export function ModalCreateComponent(data: FormData) {
               onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4 w-full">
+          <div className="grid w-full grid-cols-4 items-center gap-4">
             <Label htmlFor="picture" className="text-right">
               Image
             </Label>
