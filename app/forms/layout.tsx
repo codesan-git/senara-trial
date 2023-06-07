@@ -12,24 +12,28 @@ export const metadata: Metadata = {
 const sidebarNavItems = [
   {
     title: "Profile",
-    href: "/examples/forms",
+    href: "forms",
   },
   {
     title: "Account",
-    href: "/examples/forms/account",
+    href: "forms/account",
   },
   {
     title: "Appearance",
-    href: "/examples/forms/appearance",
+    href: "forms/appearance",
   },
   {
     title: "Notifications",
-    href: "/examples/forms/notifications",
+    href: "forms/notifications",
   },
   {
     title: "Display",
-    href: "/examples/forms/display",
+    href: "forms/display",
   },
+  {
+    title: "Component",
+    href: "forms/component"
+  }
 ]
 
 interface SettingsLayoutProps {
@@ -41,14 +45,14 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     <>
       <div className="md:hidden">
         <Image
-          src="/examples/forms-light.png"
+          src="/forms-light.png"
           width={1280}
           height={791}
           alt="Forms"
           className="block dark:hidden"
         />
         <Image
-          src="/examples/forms-dark.png"
+          src="/forms-dark.png"
           width={1280}
           height={791}
           alt="Forms"
@@ -67,7 +71,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="flex-1 lg:w-full">{children}</div>
         </div>
       </div>
     </>

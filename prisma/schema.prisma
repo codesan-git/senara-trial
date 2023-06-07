@@ -52,13 +52,14 @@ model Component {
   id  Int @unique @id @default(autoincrement())
   componentId String
   name  String
-  price String
+  price Int
   image String?
+  imgName String?
 }
 
 model Theme {
   id  Int @unique @id @default(autoincrement())
   themeId String
   name  String
-  Color String
+  color String
 }
