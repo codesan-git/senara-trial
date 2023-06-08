@@ -131,7 +131,12 @@ export function ModalTheme({ theme }: themeData) {
               placeholder={theme?.name}
               value={form?.name}
               className="col-span-3"
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) => 
+                {
+                  setForm({ ...form, name: e.target.value })
+                  setDisabled(false)
+                }
+              }
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
