@@ -1,8 +1,10 @@
 import { Metadata } from "next"
 import Image from "next/image"
+import { NavLink } from "react-router-dom"
 
 import { Separator } from "@/components/ui/separator"
 import { SidebarNav } from "@/app/forms/components/sidebar-nav"
+import Breadcrumbs from "@/components/breadcrumbs"
 
 export const metadata: Metadata = {
   title: "Forms",
@@ -12,31 +14,35 @@ export const metadata: Metadata = {
 const sidebarNavItems = [
   {
     title: "Profile",
-    href: "forms",
+    to: "forms",
   },
   {
     title: "Account",
-    href: "forms/account",
+    to: "forms/account",
   },
   {
     title: "Appearance",
-    href: "forms/appearance",
+    to: "forms/appearance",
   },
   {
     title: "Notifications",
-    href: "forms/notifications",
+    to: "forms/notifications",
   },
   {
     title: "Display",
-    href: "forms/display",
+    to: "forms/display",
   },
   {
     title: "Component",
-    href: "forms/component"
+    to: "forms/component"
   },
   {
     title: "Theme",
-    href: "forms/theme"
+    to: "forms/theme"
+  },
+  {
+    title: "Rooms",
+    to: "forms/rooms"
   },
 ]
 
@@ -75,7 +81,9 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:w-full">{children}</div>
+          <div className="flex-1 lg:w-full">
+            {children}
+          </div>
         </div>
       </div>
     </>
