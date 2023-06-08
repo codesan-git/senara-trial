@@ -43,6 +43,7 @@ export function ModalCreateTheme(data: FormData) {
   const { toast } = useToast()
 
   const [color, setColor] = useColor("hex", "#121212")
+  const [disabled, setDisabled] = useState(true)
   const [chooseColor, setChooseColor] = useState("")
   const [form, setForm] = useState<FormData>({
     themeId: "",
@@ -72,18 +73,24 @@ export function ModalCreateTheme(data: FormData) {
     }
   }
 
-  const onChangeColor = () => {
-    // setColor(color)
-    setForm({...form, color:color.hex})
+  const submitColor = () => {
+    console.log(color.hex)
+    setForm({ ...form, color: color?.hex! })
+    setDisabled(false)
+  }
+  
+  const repeatSubmitColor = () => {
+    console.log("repeat submit jalan")
+    setDisabled(true)
   }
 
   const handleSubmit = async (data: FormData) => {
-    // setForm({...form, color:color.hex})
     create(data)
+    setDisabled(true)
   }
 
-  console.log('check color', color?.hex)
-  console.log('cek form', form)
+  console.log("check color", color?.hex)
+  console.log("cek form", form)
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -121,25 +128,35 @@ export function ModalCreateTheme(data: FormData) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="color" className="text-right">
-              Color
+              Pick Color
             </Label>
-            <ColorPicker width={276} height={138} color={color}
-                  //  onChange={(e)=>
-                  //  setForm({...form, color: color.hex})} hideHSV dark />
-                  onChange={ setColor }
-                  onChangeComplete={()=>setForm({...form, color:color?.hex!})} 
-                  hideHSV hideRGB dark
-                  />
+            <div>
+              <ColorPicker
+                width={276}
+                height={138}
+                color={color}
+                onChange={setColor}
+                onChangeComplete={(e) => {
+                  repeatSubmitColor()
+                  setForm({ ...form, color: color?.hex! })
+                }}
+                hideHSV
+                hideRGB
+                dark
+              />
+            </div>
           </div>
         </div>
         <DialogFooter>
+          <Button onClick={submitColor} className="block">
+            Submit Color
+          </Button>
           <Button
             type="submit"
+            disabled={disabled}
             onClick={(e) => {
               e.preventDefault()
-              // setForm({...form, color:color.hex})
               handleSubmit(form)
-              // handleUploadFile()
               setIsOpen(false)
             }}
           >

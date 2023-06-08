@@ -28,6 +28,7 @@ import { ModalCreateProject } from "@/components/modalCreateProject"
 import { ModalProject } from "@/components/modalProject"
 import useTheme from "@/app/hooks/getThemeHooks"
 import { ModalCreateTheme } from "../components/modalCreateTheme"
+import { ModalTheme } from "../components/modalTheme"
 // import { ModalTheme } from "../components/modalTheme"
 
 // import { ModalTheme } from "../components/modalTheme"
@@ -78,12 +79,12 @@ export default function TableTheme() {
               <TableCell className="text-center">{theme.name}</TableCell>
               <TableCell className="text-center" style={{backgroundColor:`${theme.color}`}}>{theme.color}</TableCell>
               <TableCell className="flex justify-center gap-4">
-                {/* <ModalTheme theme={{
+                <ModalTheme theme={{
                   id: theme.id,
                   themeId: theme.themeId,
                   name: theme.name,
                   color: theme.color
-                }} /> */}
+                }} />
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="outline">Show Dialog</Button>
