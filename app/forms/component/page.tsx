@@ -28,8 +28,8 @@ import { ModalCreateProject } from "@/components/modalCreateProject"
 import { ModalProject } from "@/components/modalProject"
 import useComponent from "@/app/hooks/getComponentHooks"
 
-import { ModalComponent } from "../components/modalComponent"
-import { ModalCreateComponent } from "../components/modalCreateComponent"
+import { ModalComponent } from "../components/component/modalComponent"
+import { ModalCreateComponent } from "../components/component/modalCreateComponent"
 
 interface FormData {
   componentId: string

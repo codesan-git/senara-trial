@@ -71,48 +71,6 @@ export function ModalCreateProject(data:FormData) {
     }
   }
 
-  // const handleUploadFile = () => {
-  //   if (imageFile) {
-  //     const name = imageFile.name
-  //     const storageRef = ref(storage, `image/${name}`)
-  //     const uploadTask = uploadBytesResumable(storageRef, imageFile)
-
-  //     uploadTask.on(
-  //       'state_changed',
-  //       (snapshot) => {
-  //         const progress =
-  //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-
-  //         setProgressUpload(progress) // to show progress upload
-
-  //         switch (snapshot.state) {
-  //           case 'paused':
-  //             console.log('Upload is paused')
-  //             break
-  //           case 'running':
-  //             console.log('Upload is running')
-  //             break
-  //         }
-  //       },
-  //       (error:any) => {
-  //         // message.error(error.message)
-  //         console.log(error)
-  //       },
-  //       () => {
-  //         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-  //           //url is download url of file
-  //           setDownloadURL(url)
-  //           data.image = url;
-  //           // create(data)
-  //         })
-  //       },
-  //     )
-  //   } else {
-  //     // message.error('File not found')npm 
-  //     console.log('file not found')
-  //   }
-  // }
-
   const handleRemoveFile = () => setImageFile(undefined)
 
   async function create(data: FormData, image: string, imgName: string) {

@@ -1,10 +1,13 @@
 import React from 'react'
-import RoomsContent from './roomsContent'
+// import RoomsContent from './roomsContent'
+import RoomsPage from './roomsPage'
+
 
 export default function Rooms() {
   return (
     <>
-      <RoomsContent />
+      {/* <RoomsContent /> */}
+      <RoomsPage />
     </>
   )
 }

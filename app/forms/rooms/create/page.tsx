@@ -1,7 +1,16 @@
-import React from 'react'
+import { ComponentRoomPage } from "../../components/rooms/componentRoomPage"
 
-export default function CreateRooms() {
+interface FormData {
+  name: string
+  description: string
+  image: string
+  imgName: string
+}
+
+export default function CreateRooms(data:FormData) {
   return (
-    <div className='bg-red-950'>CreateRooms</div>
+    <div className=''>
+      <ComponentRoomPage name={""} description={""} image={""} imgName={""} />
+    </div>
   )
 }

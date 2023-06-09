@@ -1,25 +1,18 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+
 import { Button } from "@/components/ui/button"
+import createRooms from "@/app/forms/public/forms/createRooms.jpg"
 import useRooms from "@/app/hooks/getRoomsHooks"
 
-interface ProjectProps extends React.HTMLAttributes<HTMLDivElement> {
+interface RoomsProps extends React.HTMLAttributes<HTMLDivElement> {
   aspectRatio?: "portrait" | "square"
 }
+
 export default function RoomsPage({ aspectRatio = "portrait" }) {
   const { data: getRooms = [] } = useRooms()
 
@@ -61,37 +54,30 @@ export default function RoomsPage({ aspectRatio = "portrait" }) {
                   />
                 )}
               </div>
-              {/* <b>{rooms.name}</b> */}
-              {/* <ModalRooms rooms={rooms} /> */}
-
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="default" className="w-full rounded-none">
-                    {rooms.name}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteRooms(rooms.id, i)}>
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Button variant="default" className="w-full rounded-none">
+                Create Rooms
+              </Button>
             </div>
           </div>
         ))}
         {/* {ModalCreateRooms(getRooms)} */}
+        <div className="overflow-hidden rounded-md">
+          <Link href={"/forms/rooms/create"} target="_self" rel="noreferrer">
+            <Image
+              src={createRooms}
+              alt={"create rooms"}
+              width={300}
+              height={300}
+              className={cn(
+                "h-auto w-auto object-cover transition-all hover:scale-105",
+                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
+              )}
+            />
+            <Button variant="default" className="w-full rounded-none">
+              Create Rooms
+            </Button>
+          </Link>
+        </div>
       </div>
     </>
   )
