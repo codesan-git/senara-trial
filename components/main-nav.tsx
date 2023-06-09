@@ -1,17 +1,28 @@
 import * as React from "react"
-import Link from "next/link"
+// import Link from "next/link"
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import { NavLink } from "react-router-dom"
 
 import { NavItem } from "@/types/nav"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
-
+import "@/app/style.css";
 import Breadcrumbs from "./breadcrumbs"
 
 interface MainNavProps {
   items?: NavItem[]
 }
+
+function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+  e.preventDefault();
+  console.info('You clicked a breadcrumb.');
+}
+
+
+
+
 
 export function MainNav({ items }: MainNavProps) {
   return (

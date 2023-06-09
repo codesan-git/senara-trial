@@ -3,8 +3,8 @@ import Image from "next/image"
 import { NavLink } from "react-router-dom"
 
 import { Separator } from "@/components/ui/separator"
+import Breadcrumbs from "@/app/forms/components/breadcrumbs"
 import { SidebarNav } from "@/app/forms/components/sidebar-nav"
-import Breadcrumbs from "@/components/breadcrumbs"
 
 export const metadata: Metadata = {
   title: "Forms",
@@ -14,35 +14,35 @@ export const metadata: Metadata = {
 const sidebarNavItems = [
   {
     title: "Profile",
-    to: "forms",
+    href: "forms",
   },
   {
     title: "Account",
-    to: "forms/account",
+    href: "forms/account",
   },
   {
     title: "Appearance",
-    to: "forms/appearance",
+    href: "forms/appearance",
   },
   {
     title: "Notifications",
-    to: "forms/notifications",
+    href: "forms/notifications",
   },
   {
     title: "Display",
-    to: "forms/display",
+    href: "forms/display",
   },
   {
     title: "Component",
-    to: "forms/component"
+    href: "forms/component",
   },
   {
     title: "Theme",
-    to: "forms/theme"
+    href: "forms/theme",
   },
   {
     title: "Rooms",
-    to: "forms/rooms"
+    href: "forms/rooms",
   },
 ]
 
@@ -82,6 +82,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
             <SidebarNav items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:w-full">
+            <Breadcrumbs />
             {children}
           </div>
         </div>

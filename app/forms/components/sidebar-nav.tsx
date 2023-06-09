@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
+import Breadcrumbs from "./breadcrumbs"
+
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
-    to: string
+    href: string
     title: string
   }[]
 }
@@ -26,11 +28,11 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
     >
       {items.map((item) => (
         <Link
-          key={item.to}
-          href={item.to}
+          key={item.href}
+          href={item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === item.to
+            pathname === item.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start"
