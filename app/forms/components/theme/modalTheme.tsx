@@ -30,8 +30,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Toast, ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastDemo } from "@/components/toast"
-import useThemes from "@/app/hooks/getThemeHooks"
-import useTheme from "@/app/hooks/getThemeHooks"
+import useThemes from "@/app/hooks/forms/theme/getThemeHooks"
+import useTheme from "@/app/hooks/forms/theme/getThemeHooks"
 
 interface themeData {
   theme: Theme

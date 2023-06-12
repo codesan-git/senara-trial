@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Toast, ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastDemo } from "@/components/toast"
-import useThemes from "@/app/hooks/getThemeHooks"
+import useThemes from "@/app/hooks/forms/theme/getThemeHooks"
 
 import "react-color-palette/lib/css/styles.css"
 

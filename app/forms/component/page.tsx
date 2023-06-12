@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table"
 import { ModalCreateProject } from "@/components/modalCreateProject"
 import { ModalProject } from "@/components/modalProject"
-import useComponent from "@/app/hooks/getComponentHooks"
+import useComponent from "@/app/hooks/forms/component/getComponentHooks"
 
 import { ModalComponent } from "../components/component/modalComponent"
 import { ModalCreateComponent } from "../components/component/modalCreateComponent"

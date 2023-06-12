@@ -3,10 +3,16 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import Box from "@mui/material/Box"
+import FormControl from "@mui/material/FormControl"
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import Select, { SelectChangeEvent } from "@mui/material/Select"
 import { Rooms } from "@prisma/client"
+import { Value } from "@radix-ui/react-select"
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { storage } from "firebaseConfig"
-import { List } from "lucide-react"
+import { Key, List, Option } from "lucide-react"
 
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
@@ -30,18 +36,21 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { ScrollArea } from "@/components/ui/scroll-area"
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
-import useRoomss from "@/app/hooks/getRoomsHooks"
-
+import useMiddleTheme from "@/app/hooks/forms/middleTheme/getMiddleTheme"
+import useRoomss from "@/app/hooks/forms/rooms/getRoomsHooks"
+import useTheme from "@/app/hooks/forms/theme/getThemeHooks"
+import useComponent from "@/app/hooks/forms/component/getComponentHooks"
 interface RoomsData {
   rooms: Rooms
 }
@@ -53,11 +62,19 @@ interface FormData {
   imgName: string
 }
 
+interface FormTheme {
+  themeId: string
+  roomsId: number
+}
+
 interface RoomsProps extends React.HTMLAttributes<HTMLDivElement> {
   aspectRatio?: "portrait" | "square"
 }
 
 export function ComponentRoomPage(data: FormData) {
+  const { data: getMiddleTheme = [] } = useMiddleTheme()
+  const { data: getTheme = [] } = useTheme()
+  const { data: getComponent = [] } = useComponent()
   const { toast } = useToast()
 
   const [form, setForm] = useState<FormData>({
@@ -66,6 +83,14 @@ export function ComponentRoomPage(data: FormData) {
     image: "",
     imgName: "",
   })
+  const [selectedTheme, setSelectedTheme] = useState<FormTheme>({
+    themeId: "",
+    roomsId: 2,
+  })
+
+  const [selectedThemeName, setSelectedThemeName] = useState("")
+  const [selectedComponentName, setSelectedComponentName] = useState("")
+
   const [imageFile, setImageFile] = useState<File>()
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -75,6 +100,15 @@ export function ComponentRoomPage(data: FormData) {
   const [progressUpload, setProgressUpload] = useState(0)
 
   const router = useRouter()
+
+  const handleChangeTheme = (event: SelectChangeEvent) => {
+    // setSelectedThemeName(event.target.value as string)
+    setSelectedTheme({themeId:event.target.value, roomsId:selectedTheme.roomsId})
+  }
+
+  const handleChangeComponent = (event: SelectChangeEvent) => {
+    setSelectedComponentName(event.target.value as string)
+  }
 
   const handleSelectedFile = (files: any) => {
     if (files && files[0].size < 1000000) {
@@ -102,6 +136,42 @@ export function ComponentRoomPage(data: FormData) {
         method: "POST",
       }).then(() => {
         setForm({ name: "", description: "", image: "", imgName: "" })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function themeId() {
+    try {
+      // console.log("check nama", data.imgName)
+
+      fetch(`http://localhost:3000/api/getThemeId/${selectedTheme}`, {
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      }).then(() => {
+        // setSelectedTheme({ name: "", description: "", image: "", imgName: "" })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSubmitTheme = async() =>{
+    try {
+      console.log("check nama", data.imgName)
+      
+      fetch(`http://localhost:3000/api/middleTheme`, {
+        body: JSON.stringify(selectedTheme),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      }).then(() => {
+        setSelectedTheme({ ...selectedTheme, themeId: "" })
       })
     } catch (error) {
       console.log(error)
@@ -156,6 +226,14 @@ export function ComponentRoomPage(data: FormData) {
     }
   }
 
+  function logValue() {
+    setSelectedThemeName((e: any) => e.target?.value)
+    console.log(selectedThemeName)
+  }
+
+  console.log("selectname", selectedTheme)
+  console.log('selectedName', selectedThemeName)
+  console.log("select component", selectedComponentName)
   return (
     <div>
       <Card className="w-full border-none ">
@@ -192,41 +270,115 @@ export function ComponentRoomPage(data: FormData) {
             <form>
               <div className="grid w-full items-center gap-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col space-y-1.5">
+                  {/* <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="component">Include Component</Label>
                     <Select>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select" />
-                        <SelectContent position="popper">
-                          <SelectItem value="next">Next.js</SelectItem>
+                        <SelectValue placeholder="Select"  />
+                        <SelectContent position="popper" id="component">
+                          <SelectItem value="next" >Next.js</SelectItem>
                           <SelectItem value="sveltekit">SvelteKit</SelectItem>
                           <SelectItem value="astro">Astro</SelectItem>
                           <SelectItem value="nuxt">Nuxt.js</SelectItem>
                         </SelectContent>
                       </SelectTrigger>
                     </Select>
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="theme">Room Collection Description</Label>
-                    <Select>
+                  </div> */}
+                  {/* <div className="flex flex-col space-y-1.5"> */}
+                  {/* <Label htmlFor="theme">Theme Include</Label>
+                    <Select onValueChange={()=>setSelectedThemeName(selectedThemeName)}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select" />
+                        <SelectValue
+                          placeholder="Select"
+                        />
+
                         <SelectContent position="popper">
-                          <SelectItem value="next">Next.js</SelectItem>
-                          <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                          <SelectItem value="astro">Astro</SelectItem>
-                          <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                          <ScrollArea className="h-[200px] rounded-md border p-4">
+                            {getTheme.map((theme: any) => (
+                              <div key={theme.id}>
+                                <SelectItem
+                                  id="theme"
+                                  value={theme.name}
+                                  placeholder={selectedThemeName}
+                                >
+                                  {theme.name}
+                                </SelectItem>
+                              </div>
+                            ))}
+                          </ScrollArea>
                         </SelectContent>
                       </SelectTrigger>
-                    </Select>
-                  </div>
+                    </Select> */}
+
+                  {/* {getTheme.map((theme:any)=>(
+                    <button onClick={()=>setSelectedThemeName(theme.name)}>
+                      {theme.name}
+                    </button>
+                    ))} */}
+
+                  {/* Test New Select */}
+                  {/* <select
+                      name="theme"
+                      id="theme"
+                      onChange={(e: any) =>
+                        setSelectedThemeName(e.target.value)
+                      }
+                      className=""
+                    >
+                      {getTheme.map((theme: any) => (
+                        <option value={theme.name}>{theme.name}</option>
+                      ))}
+                    </select> */}
+                  {/* <button onClick={logValue}>Button</button> */}
+                  {/* </div> */}
+
+                  {/* MUI SELECT */}
+                  <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="component-include-label" className="text-slate-200">Component Include</InputLabel>
+                      <Select
+                        labelId="component-include-label"
+                        id="component-include"
+                        value={selectedComponentName}
+                        label="Component Include"
+                        onChange={handleChangeComponent}
+                        className="bg-slate-950 text-slate-200"
+                      >
+                        {getComponent.map((component:any)=>(
+                          <MenuItem value={component.id}>{component.name}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="theme-include-label" className="text-slate-200">Theme Include</InputLabel>
+                      <Select
+                        labelId="theme-include-label"
+                        id="theme-include"
+                        value={selectedTheme.themeId}
+                        label="Theme Include"
+                        onChange={handleChangeTheme}
+                        className="bg-slate-950 text-slate-200"
+                      >
+                        {getTheme.map((theme:any)=>(
+                          <MenuItem value={theme.id}>{theme.name}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
                 </div>
               </div>
             </form>
           </CardContent>
           <CardFooter className="flex justify-end gap-4">
-            <Button variant="ghost">Cancel</Button>
-            <Button>Deploy</Button>
+            <Button variant="ghost">Reset</Button>
+            <Button onClick={(e)=>
+              {
+                e.preventDefault()
+                handleSubmitTheme()
+              }
+              }>Deploy</Button>
           </CardFooter>
         </Card>
       </Card>

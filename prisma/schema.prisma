@@ -52,30 +52,30 @@ model House {
 }
 
 model Component {
-  id            Int           @id @unique @default(autoincrement())
-  componentId   String
-  name          String
-  price         Int
-  image         String?
-  imgName       String?
+  id              Int               @id @unique @default(autoincrement())
+  componentId     String
+  name            String
+  price           Int
+  image           String?
+  imgName         String?
   middleComponent MiddleComponent[]
 }
 
 model Theme {
   id        Int           @id @unique @default(autoincrement())
   themeId   String
-  name      String
+  name      String        @unique
   color     String
   themeName MiddleTheme[]
 }
 
 model Rooms {
-  id          Int           @id @default(autoincrement())
-  name        String
-  description String?
-  image       String?
-  imgName     String?
-  middleTheme MiddleTheme[]
+  id              Int               @id @default(autoincrement())
+  name            String
+  description     String?
+  image           String?
+  imgName         String?
+  middleTheme     MiddleTheme[]
   middleComponent MiddleComponent[]
 }
 
@@ -90,9 +90,9 @@ model MiddleComponent {
 
 model MiddleTheme {
   id          Int     @id @default(autoincrement())
-  themeId     Int     @map("house_id")
+  themeId     Int     @map("theme_id")
   roomsId     Int     @map("middleRooms_id")
   middleRooms Rooms[]
 
-  theme     Theme     @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  theme Theme @relation(fields: [themeId], references: [id], onDelete: Cascade)
 }

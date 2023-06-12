@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table"
 import { ModalCreateProject } from "@/components/modalCreateProject"
 import { ModalProject } from "@/components/modalProject"
-import useTheme from "@/app/hooks/getThemeHooks"
+import useTheme from "@/app/hooks/forms/theme/getThemeHooks"
 import { ModalCreateTheme } from "../components/theme/modalCreateTheme"
 import { ModalTheme } from "../components/theme/modalTheme"
 // import { ModalTheme } from "../components/modalTheme"

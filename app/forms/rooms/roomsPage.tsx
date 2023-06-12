@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
 import createRooms from "@/app/forms/public/forms/createRooms.jpg"
-import useRooms from "@/app/hooks/getRoomsHooks"
+import useRooms from "@/app/hooks/forms/rooms/getRoomsHooks"
 
 interface RoomsProps extends React.HTMLAttributes<HTMLDivElement> {
   aspectRatio?: "portrait" | "square"

@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Toast, ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastDemo } from "@/components/toast"
-import usecomponents from "@/app/hooks/getComponentHooks"
+import usecomponents from "@/app/hooks/forms/component/getComponentHooks"
 
 interface componentData {
   component: Component
