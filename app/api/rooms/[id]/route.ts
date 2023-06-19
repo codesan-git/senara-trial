@@ -6,18 +6,47 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const id = parseInt(params.id);
-  const rooms = await prisma?.rooms?.findUnique({
+  const roomsThemeId = parseInt(params.id);
+  const roomsComponentId = parseInt(params.id);
+
+  const themeRooms = await prisma?.middleTheme?.findMany({
+    where: {
+      roomsThemeId,
+    },
+  })
+
+  const componentRooms = await prisma?.middleComponent?.findMany({
+    where: {
+      roomsComponentId,
+    },
+  })
+  
+  const rooms = await prisma?.rooms?.findMany({
     where: {
       id,
     },
+    include:{
+      middleTheme: true,
+      middleComponent: true
+    }
   });
-
+  const sapi = rooms.map((agung)=>({
+    ...agung,
+    middleTheme: themeRooms.map((ageng)=>({
+      ...ageng,
+    })),
+    middleComponent: componentRooms.map((anom)=>({
+      ...anom
+    }))
+  }))
+  
   if (!rooms) {
     return new NextResponse("No rooms with ID found", { status: 404 });
   }
 
-  return NextResponse.json(rooms);
+  return NextResponse.json(sapi);
 }
+
 
 export async function PATCH(
   request: Request,

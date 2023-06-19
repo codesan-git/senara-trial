@@ -5,10 +5,10 @@ export async function GET(
   request: Request,
   { params }: { params: { middleRooms_id: string } }
 ) {
-  const roomsId = parseInt(params.middleRooms_id);
+  const roomsThemeId = parseInt(params.middleRooms_id);
   const rooms = await prisma?.middleTheme?.findMany({
     where: {
-      roomsId,
+      roomsThemeId,
     },
   });
 
@@ -23,11 +23,11 @@ export async function PATCH(
   request: Request,
   { params }: { params: { middleRooms_id: string } }
 ) {
-  const roomsId = parseInt(params.middleRooms_id);
+  const roomsThemeId = parseInt(params.middleRooms_id);
   let json = await request.json();
 
   const updated_rooms = await prisma?.middleTheme?.updateMany({
-    where: { roomsId },
+    where: { roomsThemeId },
     data: json,
   });
 
@@ -43,9 +43,9 @@ export async function DELETE(
   { params }: { params: { middleRooms_id: string } }
 ) {
   try {
-    const roomsId = parseInt(params.middleRooms_id);
+    const roomsThemeId = parseInt(params.middleRooms_id);
     await prisma?.middleTheme?.deleteMany({
-      where: { roomsId },
+      where: { roomsThemeId },
     });
 
     return new NextResponse(null, { status: 204 });

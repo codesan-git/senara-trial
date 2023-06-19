@@ -34,8 +34,8 @@ interface themeData {
 }
 
 interface FormData {
-  themeId: string
-  name: string
+  value: string
+  label: string
   color: string
 }
 
@@ -46,8 +46,8 @@ export function ModalCreateTheme(data: FormData) {
   const [disabled, setDisabled] = useState(true)
   const [chooseColor, setChooseColor] = useState("")
   const [form, setForm] = useState<FormData>({
-    themeId: "",
-    name: "",
+    value: "",
+    label: "",
     color: "",
   })
   const [isOpen, setIsOpen] = useState(false)
@@ -66,7 +66,7 @@ export function ModalCreateTheme(data: FormData) {
         },
         method: "POST",
       }).then(() => {
-        setForm({ themeId: "", name: "", color: `${color.hex}` })
+        setForm({ value: "", label: "", color: `${color.hex}` })
       })
     } catch (error) {
       console.log(error)
@@ -103,27 +103,27 @@ export function ModalCreateTheme(data: FormData) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="themeId" className="text-right">
+            <Label htmlFor="value" className="text-right">
               ID
             </Label>
             <Input
-              id="themeId"
+              id="value"
               placeholder="theme id"
-              value={form?.themeId}
+              value={form?.value}
               className="col-span-3"
-              onChange={(e) => setForm({ ...form, themeId: e.target.value })}
+              onChange={(e) => setForm({ ...form, value: e.target.value })}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+            <Label htmlFor="label" className="text-right">
               Name
             </Label>
             <Input
-              id="name"
+              id="label"
               placeholder="theme Name"
-              value={form?.name}
+              value={form?.label}
               className="col-span-3"
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) => setForm({ ...form, label: e.target.value })}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">

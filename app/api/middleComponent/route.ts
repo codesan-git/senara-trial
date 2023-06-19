@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     const json = await request.json();
 
-    const middleComponent = await prisma?.middleComponent?.create({
+    const middleComponent = await prisma?.middleComponent?.createMany({
       data: json,
     });
 

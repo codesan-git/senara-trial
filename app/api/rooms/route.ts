@@ -2,7 +2,17 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  const roomss = await prisma?.rooms.findMany();
+  const roomss = await prisma?.rooms.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      image: true,
+      imgName: true,
+      middleComponent: true,
+      middleTheme:true
+    }
+  });
   return NextResponse.json(roomss);
 }
 

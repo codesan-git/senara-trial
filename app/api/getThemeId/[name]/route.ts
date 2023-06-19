@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { name: string } }
+  { params }: { params: { value: string } }
 ) {
-  const name = params.name;
+  const value = params.value;
   const theme = await prisma?.theme?.findFirst({
     where: {
-      name,
+      value,
     },
   });
 

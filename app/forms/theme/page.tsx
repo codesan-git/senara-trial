@@ -55,11 +55,7 @@ export default function TableTheme() {
 
   return (
     <>
-      <ModalCreateTheme
-        themeId={""}
-        name={""}
-        color={""}
-      />
+      <ModalCreateTheme value={""} label={""} color={""}/>
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
@@ -81,8 +77,8 @@ export default function TableTheme() {
               <TableCell className="flex justify-center gap-4">
                 <ModalTheme theme={{
                   id: theme.id,
-                  themeId: theme.themeId,
-                  name: theme.name,
+                  value: theme.themeId,
+                  label: theme.name,
                   color: theme.color
                 }} />
                 <AlertDialog>

@@ -5,10 +5,10 @@ export async function GET(
   request: Request,
   { params }: { params: { middleRooms_id: string } }
 ) {
-  const roomsId = parseInt(params.middleRooms_id);
+  const roomsComponentId = parseInt(params.middleRooms_id);
   const rooms = await prisma?.middleComponent?.findMany({
     where: {
-      roomsId,
+      roomsComponentId,
     },
   });
 
@@ -43,9 +43,9 @@ export async function DELETE(
   { params }: { params: { middleRooms_id: string } }
 ) {
   try {
-    const roomsId = parseInt(params.middleRooms_id);
+    const roomsComponentId = parseInt(params.middleRooms_id);
     await prisma?.middleComponent?.deleteMany({
-      where: { roomsId },
+      where: { roomsComponentId },
     });
 
     return new NextResponse(null, { status: 204 });

@@ -38,8 +38,8 @@ interface themeData {
 }
 
 interface FormData {
-  themeId: string
-  name: string
+  value: string
+  label: string
   color: string
 }
 
@@ -48,8 +48,8 @@ export function ModalTheme({ theme }: themeData) {
   const { data: getTheme = [] } = useTheme()
 
   const [form, setForm] = useState<FormData>({
-    themeId: theme?.themeId,
-    name: theme?.name,
+    value: theme?.value,
+    label: theme?.label,
     color: theme?.color,
   })
 
@@ -71,8 +71,8 @@ export function ModalTheme({ theme }: themeData) {
         method: "PATCH",
       }).then(() => {
         setForm({
-          themeId: form?.themeId,
-          name: form?.name,
+          value: form?.value,
+          label: form?.label,
           color: form?.color,
         })
       })
@@ -111,29 +111,29 @@ export function ModalTheme({ theme }: themeData) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="themeId" className="text-right">
-              Id
+            <Label htmlFor="value" className="text-right">
+              Value
             </Label>
             <Input
-              id="themeId"
-              placeholder={theme?.themeId}
-              value={form?.themeId}
+              id="value"
+              placeholder={theme?.value}
+              value={form?.value}
               className="col-span-3"
-              onChange={(e) => setForm({ ...form, themeId: e.target.value })}
+              onChange={(e) => setForm({ ...form, value: e.target.value })}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="label" className="text-right">
+              Label
             </Label>
             <Input
-              id="name"
-              placeholder={theme?.name}
-              value={form?.name}
+              id="label"
+              placeholder={theme?.label}
+              value={form?.label}
               className="col-span-3"
               onChange={(e) => 
                 {
-                  setForm({ ...form, name: e.target.value })
+                  setForm({ ...form, label: e.target.value })
                   setDisabled(false)
                 }
               }
