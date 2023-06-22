@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const id = parseInt(params.id);
-  const rooms = await prisma?.middleComponent?.findMany({
+  const rooms = await prisma?.rooms?.findMany({
     where: {
       id,
     },
@@ -26,11 +26,14 @@ export async function PATCH(
     const id = parseInt(params.id);
     let json = await request.json();
   
-    const updated_rooms = await prisma?.middleComponent?.update({
-      where: { id },
+    const updated_rooms = await prisma?.rooms?.update({
+      where: { 
+        id
+       },
       data: json,
     });
   
+    console.log(json)
     if (!updated_rooms) {
       return new NextResponse("No rooms with roomsId found", { status: 404 });
     }

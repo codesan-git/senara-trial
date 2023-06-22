@@ -6,45 +6,32 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const id = parseInt(params.id);
-  const roomsThemeId = parseInt(params.id);
-  const roomsComponentId = parseInt(params.id);
 
-  const themeRooms = await prisma?.middleTheme?.findMany({
-    where: {
-      roomsThemeId,
-    },
-  })
 
-  const componentRooms = await prisma?.middleComponent?.findMany({
-    where: {
-      roomsComponentId,
-    },
-  })
   
   const rooms = await prisma?.rooms?.findMany({
     where: {
       id,
     },
     include:{
-      middleTheme: true,
-      middleComponent: true
-    }
+      middleTheme: {
+        include: {
+          theme: true,
+        }
+      },
+      middleComponent: {
+        include: {
+          component: true
+        }
+      }
+    },
   });
-  const sapi = rooms.map((agung)=>({
-    ...agung,
-    middleTheme: themeRooms.map((ageng)=>({
-      ...ageng,
-    })),
-    middleComponent: componentRooms.map((anom)=>({
-      ...anom
-    }))
-  }))
   
   if (!rooms) {
     return new NextResponse("No rooms with ID found", { status: 404 });
   }
 
-  return NextResponse.json(sapi);
+  return NextResponse.json(rooms);
 }
 
 
@@ -74,7 +61,16 @@ export async function DELETE(
   try {
     const id = parseInt(params.id);
     await prisma?.rooms?.delete({
-      where: { id },
+      where: { 
+        id
+       },
+       include: {
+        middleTheme: {
+          where: {
+            id
+          }
+        }
+       }
     });
 
     return new NextResponse(null, { status: 204 });

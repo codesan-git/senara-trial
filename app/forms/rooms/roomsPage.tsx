@@ -12,9 +12,12 @@ import { useState } from "react"
 import useMiddleTheme from "@/app/hooks/forms/middleTheme/getMiddleTheme"
 import useMiddleComponent from "@/app/hooks/forms/middleComponent/getMiddleComponent"
 
+import { useRouter } from 'next/navigation'
+
 interface RoomsProps extends React.HTMLAttributes<HTMLDivElement> {
   aspectRatio?: "portrait" | "square"
 }
+
 
 interface RoomsData {
   name: string
@@ -29,6 +32,8 @@ export default function RoomsPage({ aspectRatio = "portrait" }) {
   const { data: getRooms = [] } = useRooms()
   const { data: getMiddleTheme = [] } = useMiddleTheme()
   const { data: getMiddleComponent = [] } = useMiddleComponent()
+
+  const router = useRouter()
 
   const [form, setForm] = useState<RoomsData>({
     name: "",
@@ -61,7 +66,7 @@ export default function RoomsPage({ aspectRatio = "portrait" }) {
           // className="border-light-blue-500 m-4 border-4 border-double"
           >
             <div key={rooms.id}>
-              <Link href={`/forms/rooms/${rooms.id}`} target="_self" rel="noreferrer">
+              {/* <Link href={`/forms/rooms/${rooms.id}`} target="_self" rel="noreferrer"> */}
                 <div className="overflow-hidden rounded-md">
                   {rooms.image && (
                     <Image
@@ -76,13 +81,13 @@ export default function RoomsPage({ aspectRatio = "portrait" }) {
                           : "aspect-square"
                       )}
                     />
-                  )}
+                    )}
+                    <p>{rooms.id}</p>
                 </div>
-                <Button variant="default" className="w-full rounded-none">
-                {rooms?.middleTheme}
+                <Button variant="default" className="w-full rounded-none" onClick={()=>router.push(`/forms/rooms/${rooms.id}`)} >
                   Update Rooms
                 </Button>
-              </Link>
+              {/* </Link> */}
             </div>
           </div>
         ))}

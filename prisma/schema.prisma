@@ -83,8 +83,8 @@ model MiddleComponent {
   id               Int     @id @default(autoincrement())
   componentId      Int     @map("component_id")
   roomsComponentId Int     @map("middleRooms_id")
-  middleRooms      Rooms[]
 
+  rooms Rooms @relation(fields: [roomsComponentId], references: [id], onDelete: Cascade)
   component Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
 }
 
@@ -92,7 +92,7 @@ model MiddleTheme {
   id           Int     @id @default(autoincrement())
   themeId      Int     @map("theme_id")
   roomsThemeId Int     @map("middleRooms_id")
-  middleRooms  Rooms[]
 
+  rooms Rooms @relation(fields: [roomsThemeId], references: [id], onDelete: Cascade)
   theme Theme @relation(fields: [themeId], references: [id], onDelete: Cascade)
 }

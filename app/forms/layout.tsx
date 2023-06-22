@@ -44,6 +44,10 @@ const sidebarNavItems = [
     title: "Rooms",
     href: "forms/rooms",
   },
+  {
+    title: "Housing",
+    href: "forms/housing"
+  }
 ]
 
 interface SettingsLayoutProps {

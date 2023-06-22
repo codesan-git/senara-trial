@@ -161,6 +161,8 @@ export function ModalComponent({ component }: ComponentData) {
       //console.log(error)
     }
   }
+
+  
   // console.log('imageFile', component.image)
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -10,6 +10,17 @@ export async function GET(
     where: {
       roomsComponentId,
     },
+    include: {
+      rooms:{
+        select:{
+          id:true,
+          name: true,
+          description: true,
+          image: true,
+          imgName: true,
+        }
+      }
+        }
   });
 
   if (!rooms) {
